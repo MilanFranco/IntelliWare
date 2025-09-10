@@ -139,7 +139,7 @@
             <div class="signinbox">
                 <div class="new-user-line">
                     <span class="newt">New to IntelliWare?</span>
-                    <span class="reglink"><a href="#">Register here.</a></span>
+                    <span class="reglink"><a href="register.php">Register here.</a></span>
                 </div>
             </div>
             

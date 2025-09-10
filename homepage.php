@@ -6,10 +6,7 @@ if (!isset($_SESSION['Username'])) {
     exit();
 }
 
-$conn = new mysqli("localhost", "root", "", "CMS");
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once __DIR__ . '/config/db.php';
 
 
 $notificationQuery = "SELECT COUNT(*) as count FROM notifications WHERE AccountID = ? AND is_read = 0";
