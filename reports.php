@@ -71,8 +71,8 @@ $items = $_SESSION['items'] ?? [];
             </tbody>
           </table>
           <div style="margin-top:10px; display:flex; gap:8px;">
-            <button class="btn" type="button">Download PDF</button>
-            <button class="btn" type="button">Download Excel</button>
+            <a class="btn" href="src/scripts/export_pdf.php">Download PDF</a>
+            <a class="btn" href="src/scripts/export_csv.php">Download Excel</a>
           </div>
         </div>
       </div>

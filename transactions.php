@@ -50,8 +50,7 @@ $action = $_GET['action'] ?? '';
   <div class="w-full h-full flex flex-row rounded-t-[15px] overflow-hidden bg-gray-200 shadow-lg">
     <div class="sidebar w-[290px] bg-[#1D387B] text-white p-3 pt-5 flex flex-col">
       <div class="ml-2 mb-4">
-        <img src="img/logo.svg" alt="IntelliWare" class="w-[180px]" />
-        <div class="text-[10px]">Warehouse Inventory System</div>
+        <img src="img/logo.svg" alt="IntelliWare" class="w-[220px]" />
       </div>
       <div class="p-2 flex flex-col gap-[8px]">
         <?php if ($role === 'admin'): ?>
