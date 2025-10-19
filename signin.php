@@ -83,7 +83,7 @@
     <div class="container">
     
     
-            <form action="src/scripts/sampledashboard.php" method="POST" >
+            <form action="src/scripts/authenticate.php" method="POST" >
                 <div class="signinbox">
                     <h3>Log In to IntelliWare</h3>
                     <p class="subtext">Enter your username or email and password to log in.</p> 
