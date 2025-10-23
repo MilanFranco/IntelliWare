@@ -32,7 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['__step']) && $_POST['
 		.container { max-width: 560px; width: 92vw; margin-left: auto; margin-right: auto; }
 		.signinbox { background:#1D387B; border:1px solid #2A4484; border-radius:10px; padding:24px; color:#E3E3E3; box-shadow: 0 0 20px 2px #304374; }
 		.tfieldname { color:#E3E3E3; font-size:12px; margin-bottom:6px; }
-		.tf input, .tf .input { background:#13275B; color:#fff; border:1px solid #304374; padding:10px 12px; border-radius:6px; width:100%; box-sizing:border-box; }
+		.tf input, .tf .input, .tf select { background:#13275B; color:#fff; border:1px solid #304374; padding:10px 12px; border-radius:6px; width:100%; box-sizing:border-box; }
+		.tf select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E3E3E3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 10px center; background-size: 16px; padding-right: 35px; }
+		.tf select:focus { outline: none; border-color: #51D55A; box-shadow: 0 0 0 1px #51D55A; }
 		.btnlogin, .btn { background:#51D55A; color:#fff; border-radius:6px; padding:10px 12px; font-size:14px; border:1px solid transparent; cursor:pointer; width:100%; }
 		.btn-secondary { background:#13275B; color:#E3E3E3; border:1px solid #304374; text-align:center; text-decoration:none; display:inline-block; }
 		.fieldrow { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
@@ -97,8 +99,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['__step']) && $_POST['
 						</div>
 						<div class="tfieldname" style="margin-top:12px;">Email Address</div>
 						<div class="tf"><input class="input" type="email" name="email" required></div>
-						<div class="tfieldname" style="margin-top:12px;">Full Name (auto or edit)</div>
-						<div class="tf"><input class="input" type="text" name="full_name" placeholder="e.g. Juan Dela Cruz"></div>
+					<div class="tfieldname" style="margin-top:12px;">Role</div>
+					<div class="tf">
+						<select class="input" name="role" required>
+							<option value="">Select Role</option>
+							<option value="admin">Admin</option>
+							<option value="manager">Manager</option>
+							<option value="staff">Staff</option>
+						</select>
+					</div>
+					<div class="tfieldname" style="margin-top:12px;">Employee ID</div>
+					<div class="tf"><input class="input" type="text" name="employee_id" placeholder="e.g. STF-001, MGR-002, ADM-003" required></div>
 						<input type="hidden" name="username" value="<?php echo htmlspecialchars($_SESSION['reg_username'] ?? ''); ?>">
 						<input type="hidden" name="password" value="<?php echo htmlspecialchars($_SESSION['reg_password'] ?? ''); ?>">
 						<input type="hidden" name="confirm_password" value="<?php echo htmlspecialchars($_SESSION['reg_confirm'] ?? ''); ?>">

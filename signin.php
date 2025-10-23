@@ -117,14 +117,6 @@
                         </div>
                     </div>
 
-                    <div class="tfieldname">Select Role</div>
-                    <div class="tf">
-                        <select name="role" id="role" class="role-select">
-                            <option value="admin">Admin</option>
-                            <option value="staff">Warehouse Staff</option>
-                            <option value="manager">Manager/Auditor</option>
-                        </select>
-                    </div>
 
                     <div class="g-recaptcha" data-sitekey="6LdTgDQrAAAAAHokkaDM8gCwd4ZjgYAJh-H4o4Zg" data-theme="dark" style="margin: 14px 0; border-radius: 8px; transform: scale(0.94); transform-origin: left top;"></div>
                  

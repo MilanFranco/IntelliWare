@@ -14,9 +14,11 @@ $confirm  = trim($_POST['confirm_password'] ?? '');
 $first    = trim($_POST['first_name'] ?? '');
 $last     = trim($_POST['last_name'] ?? '');
 $email    = trim($_POST['email'] ?? '');
-$fullName = trim($_POST['full_name'] ?? ($first . ' ' . $last));
+$fullName = $first . ' ' . $last; // Auto-generate full name from first + last
+$role = trim($_POST['role'] ?? '');
+$employeeId = trim($_POST['employee_id'] ?? '');
 
-if ($username === '' || $password === '' || $confirm === '' || $first === '' || $last === '' || $email === '') {
+if ($username === '' || $password === '' || $confirm === '' || $first === '' || $last === '' || $email === '' || $role === '' || $employeeId === '') {
 	redirect_with_error('Please complete all fields.');
 }
 
@@ -24,25 +26,51 @@ if ($password !== $confirm) {
 	redirect_with_error('Passwords do not match.');
 }
 
-// Username uniqueness
-$check = $conn->prepare('SELECT user_id FROM users WHERE username = ?');
-$check->bind_param('s', $username);
-$check->execute();
-$res = $check->get_result();
-if ($res && $res->num_rows > 0) {
-	$check->close();
-	redirect_with_error('Username is already taken.');
-}
-$check->close();
+// Username will be auto-generated, no need to check manual username
 
 $passwordHash = password_hash($password, PASSWORD_BCRYPT);
-$role = 'staff';
 
-$stmt = $conn->prepare('INSERT INTO users (username, password, role, full_name) VALUES (?,?,?,?)');
+// Validate role selection
+$allowedRoles = ['admin', 'manager', 'staff'];
+if (!in_array($role, $allowedRoles, true)) {
+    redirect_with_error('Please select a valid role.');
+}
+
+// Generate automatic username based on role and name
+function generateUsername($role, $firstName, $lastName) {
+    $firstInitial = strtolower(substr($firstName, 0, 1));
+    $lastNameLower = strtolower($lastName);
+    $baseUsername = $role . '.' . $firstInitial . $lastNameLower;
+    
+    return $baseUsername;
+}
+
+$autoUsername = generateUsername($role, $first, $last);
+
+// Check if auto-generated username is unique, if not, add a number
+$finalUsername = $autoUsername;
+$counter = 1;
+while (true) {
+    $checkUsername = $conn->prepare('SELECT user_id FROM users WHERE username = ?');
+    $checkUsername->bind_param('s', $finalUsername);
+    $checkUsername->execute();
+    $result = $checkUsername->get_result();
+    
+    if ($result->num_rows === 0) {
+        $checkUsername->close();
+        break;
+    }
+    
+    $checkUsername->close();
+    $finalUsername = $autoUsername . $counter;
+    $counter++;
+}
+
+$stmt = $conn->prepare('INSERT INTO users (username, password, role, full_name, employee_id, email) VALUES (?,?,?,?,?,?)');
 if (!$stmt) {
 	redirect_with_error('Failed to prepare statement.');
 }
-$stmt->bind_param('ssss', $username, $passwordHash, $role, $fullName);
+$stmt->bind_param('ssssss', $finalUsername, $passwordHash, $role, $fullName, $employeeId, $email);
 
 if (!$stmt->execute()) {
 	$err = $conn->error ?: 'Failed to create account.';
@@ -53,11 +81,20 @@ $stmt->close();
 
 unset($_SESSION['reg_username'], $_SESSION['reg_password'], $_SESSION['reg_confirm']);
 
-$_SESSION['Username'] = $username;
+$_SESSION['Username'] = $finalUsername;
 $_SESSION['AccountID'] = $conn->insert_id;
 $_SESSION['Role'] = $role;
 
-header('Location: ../../dash_staff.php');
+switch ($role) {
+    case 'admin':
+        header('Location: ../../dash_admin.php');
+        break;
+    case 'manager':
+        header('Location: ../../dash_manager.php');
+        break;
+    default:
+        header('Location: ../../dash_staff.php');
+}
 exit();
 
 

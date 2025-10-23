@@ -7,7 +7,6 @@ require_once '../../config/db.php';
 // Get form data
 $username = isset($_POST['username']) ? trim($_POST['username']) : '';
 $password = isset($_POST['password']) ? trim($_POST['password']) : '';
-$role = isset($_POST['role']) ? trim($_POST['role']) : '';
 
 // Validate input
 if (empty($username) || empty($password)) {
@@ -39,12 +38,7 @@ if (!password_verify($password, $user['password'])) {
     exit();
 }
 
-// Check if role matches (optional - you can remove this if you want to allow any role)
-if (!empty($role) && $user['role'] !== $role) {
-    $conn->close();
-    header('Location: ../../signin.php?error=role_mismatch');
-    exit();
-}
+// Role is automatically detected from database, no need to validate
 
 // Set session variables
 $_SESSION['user_id'] = $user['user_id'];
@@ -79,3 +73,7 @@ switch ($user['role']) {
 
 exit();
 ?>
+
+
+
+

@@ -7,8 +7,11 @@ CREATE TABLE users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(50) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
-  role ENUM('admin','staff','auditor') NOT NULL,
+  role ENUM('admin','manager','staff') NOT NULL,
   full_name VARCHAR(100),
+  department VARCHAR(100),
+  employee_id VARCHAR(50),
+  email VARCHAR(100),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
